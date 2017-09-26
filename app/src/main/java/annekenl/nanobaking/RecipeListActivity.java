@@ -2,22 +2,35 @@ package annekenl.nanobaking;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.List;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import annekenl.nanobaking.dummy.DummyContent;
-
-import java.util.List;
+import annekenl.nanobaking.recipedata.RecipeItem;
 
 /**
  * An activity representing a list of Recipes. This activity
@@ -66,12 +79,15 @@ public class RecipeListActivity extends AppCompatActivity {
         }
     }
 
+
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
     }
 
+
     public class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>
+    {
 
         private final List<DummyContent.DummyItem> mValues;
 
@@ -138,4 +154,126 @@ public class RecipeListActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    //Typical AsyncTask for network query. Modified from example Sunshine app in Udacity Android Nanodegree
+    private class FetchRecipesTask extends AsyncTask<Void, Void, String>
+    {
+        @Override
+        protected String doInBackground(Void... params)
+        {
+            HttpsURLConnection urlConnection = null;
+            BufferedReader reader = null;
+
+            // Will contain the raw JSON response as a string.
+            String recipesJsonStr = null;
+
+            //if (params.length == 0)
+            //return null;
+
+            try {
+                // Construct the URL for The Movie Database API
+                final String TMDB_BASE_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
+                //final String API_PARAM = "api_key";
+                //final String PAGE_PARAM = "page";
+
+
+                Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
+                        //.appendQueryParameter(API_PARAM, MOVIE_DB_API_KEY)
+                        //optional
+                        //.appendQueryParameter(PAGE_PARAM, "1")
+                        .build();
+
+                URL url = new URL(builtUri.toString());
+
+                urlConnection = (HttpsURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                // Read the input stream into a String
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                if (inputStream == null) {
+                    // Nothing to do.
+                    return null;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line + "\n");
+                }
+
+                if (buffer.length() == 0) {
+                    // Stream was empty.  No point in parsing.
+                    return null;
+                }
+                recipesJsonStr = buffer.toString();
+            } catch (IOException e) {
+                Log.e("Error ", e.toString());
+                // If the code didn't successfully get the data, there's no point in attemping
+                // to parse it.
+                return null;
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("Error closing stream", e.toString());
+                    }
+                }
+            }
+
+            //Log.d(FetchMoviesTask.class.getSimpleName(), moviesJsonStr);
+
+            return recipesJsonStr;
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            if(result != null) {
+
+                parseRecipesJson(result);
+            }
+        }
+
+    }
+
+    private void parseRecipesJson(String json)
+    {
+        try
+        {
+            JSONArray recipeList = new JSONArray(json);
+
+            for(int i = 0; i < recipeList.length(); i++)
+            {
+                JSONObject currRecipe = recipeList.getJSONObject(i);
+
+                RecipeItem recipeItem = new RecipeItem();
+                if(currRecipe.has("id"))
+                    recipeItem.setId(currRecipe.getInt("id"));
+                if(currRecipe.has("name"))
+                    recipeItem.setName(currRecipe.getString("name"));
+
+                if(currRecipe.has("ingredients"))
+                {
+                    //create ingredients list
+                }
+
+
+               // mMovies.add(movieItem);  //main recipes list
+            }
+
+
+            //mMovieAdapter.notifyDataSetChanged();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
