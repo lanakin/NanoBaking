@@ -13,6 +13,8 @@ public class IngredientItem implements Parcelable
     private String measure = "";
     private String ingredient = "";
 
+    public IngredientItem() {}
+
     public void setQuantity(String q) {
         quantity = q;
     }

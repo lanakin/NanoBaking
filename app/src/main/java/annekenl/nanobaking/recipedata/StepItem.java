@@ -15,6 +15,8 @@ public class StepItem implements Parcelable
     private String videoUrl = "";
     private String thumbnailUrl = "";
 
+    public StepItem() {}
+
     public void setId(int i) {
         id = i;
     }

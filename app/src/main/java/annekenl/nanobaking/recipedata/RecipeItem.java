@@ -13,8 +13,8 @@ public class RecipeItem implements Parcelable
 {
     private int id = -1;
     private String name = "";
-    private ArrayList<IngredientItem>  ingredients;
-    private ArrayList<StepItem> steps;
+    private ArrayList<IngredientItem>  ingredients = new ArrayList<>();
+    private ArrayList<StepItem> steps = new ArrayList<>();
     private String servings = "";
     private String imageUrl = ""; //if provided, so far no recipes have this*
 
