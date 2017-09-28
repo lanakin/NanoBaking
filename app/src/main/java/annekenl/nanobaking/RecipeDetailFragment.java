@@ -9,9 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
-import annekenl.nanobaking.recipedata.IngredientItem;
 import annekenl.nanobaking.recipedata.RecipeItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +35,7 @@ public class RecipeDetailFragment extends Fragment {
     private RecipeItem mItem;
 
     private Unbinder unbinder;
-    @BindView(R.id.recipe_ingreds) TextView ingredsTV;
+    @BindView(R.id.recipe_ingreds) TextView ingredsBtn;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -77,20 +74,21 @@ public class RecipeDetailFragment extends Fragment {
 
         unbinder = ButterKnife.bind(this, rootView);
 
-        // Show the dummy content as text in a TextView.
-        if (mItem != null) {
+        ingredsBtn.setText("Gather your Ingredients!");
 
-            ArrayList<IngredientItem> mRIngreds = mItem.getIngredients();
-            String ingredientsTextList = "";
-
-            for(int i = 0; i < mRIngreds.size(); i++) {
-                IngredientItem currIngred = mRIngreds.get(i);
-                ingredientsTextList += currIngred.getQuantity() + " " + currIngred.getMeasure().toLowerCase() + " " + currIngred.getIngredient();
-                if(!(i==mRIngreds.size()-1))
-                    ingredientsTextList += "\n\n";
+        ingredsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle arguments = new Bundle();
+                arguments.putParcelableArrayList(RecipeIngredsFragment.RECIPE_INGREDS, mItem.getIngredients());
+                RecipeIngredsFragment fragment = new RecipeIngredsFragment();
+                fragment.setArguments(arguments);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.recipe_detail_container, fragment, "recipe_ingreds")
+                        .addToBackStack("recipe_ingreds")
+                        .commit();
             }
-           ingredsTV.setText(ingredientsTextList);
-        }
+        });
 
         return rootView;
     }

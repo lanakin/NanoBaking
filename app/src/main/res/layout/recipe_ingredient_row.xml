@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="3"
+    android:id="@+id/recipe_ingredient_row"
+    >
+
+    <TextView
+        style="?android:attr/textAppearanceSmall"
+        android:layout_width="0px"
+        android:layout_weight="2"
+        android:layout_height="match_parent"
+        tools:text="melted and cooled bittersweet or semisweet chocolate"
+        android:gravity="center"
+        android:id="@+id/recipe_ingreds_name"
+        android:layout_marginBottom="10dp"
+        android:paddingRight="5dp"
+        />
+
+    <TextView
+        style="?android:attr/textAppearanceSmall"
+        android:layout_width="0px"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        tools:text="283 g"
+        android:id="@+id/recipe_ingreds_measure"
+        android:layout_marginBottom="10dp"
+        />
+
+
+</LinearLayout>

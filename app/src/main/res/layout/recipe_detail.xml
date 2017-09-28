@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/recipe_ingreds"
-        style="?android:attr/textAppearanceSmall"
+        style="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="12dp"
@@ -17,9 +17,9 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="5dp"
-        android:textIsSelectable="true"
+        android:textIsSelectable="false"
         tools:context="annekenl.nanobaking.RecipeDetailFragment"
-        android:background="@drawable/white_card_bottom_shadow"
+        android:background="@drawable/white_rounded_card_shadow_border"
     />
 
 </LinearLayout>
