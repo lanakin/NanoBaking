@@ -322,7 +322,7 @@ public class RecipeListActivity extends AppCompatActivity
                         if(currStep.has("videoURL"))
                             stepItem.setVideoUrl(currStep.getString("videoURL"));
                         if(currStep.has("thumbnailURL"))
-                            stepItem.setDescription(currStep.getString("thumbnailURL"));
+                            stepItem.setThumbnailUrl(currStep.getString("thumbnailURL"));
 
                         stepItems.add(stepItem);
                     }

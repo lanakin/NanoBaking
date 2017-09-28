@@ -9,10 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import annekenl.nanobaking.recipedata.RecipeItem;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import annekenl.nanobaking.recipedata.StepItem;
 
 /**
  * A fragment representing a single Recipe detail screen.
@@ -34,8 +34,6 @@ public class RecipeDetailFragment extends Fragment {
     //private DummyContent.DummyItem mItem;
     private RecipeItem mItem;
 
-    private Unbinder unbinder;
-    @BindView(R.id.recipe_ingreds) TextView ingredsBtn;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -72,8 +70,8 @@ public class RecipeDetailFragment extends Fragment {
     {
         View rootView = inflater.inflate(R.layout.recipe_detail, container, false);
 
-        unbinder = ButterKnife.bind(this, rootView);
-
+        /** INGREDIENTS **/
+        TextView ingredsBtn = (TextView) inflater.inflate(R.layout.recipe_card_button,null);
         ingredsBtn.setText("Gather your Ingredients!");
 
         ingredsBtn.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +87,34 @@ public class RecipeDetailFragment extends Fragment {
                         .commit();
             }
         });
+
+        ((ViewGroup) rootView).addView(ingredsBtn);
+
+        /** STEPS **/
+        ArrayList<StepItem> steps = mItem.getSteps();
+        for(int i = 0; i < steps.size(); i++)
+        {
+            final StepItem aStepItem = steps.get(i);
+
+            TextView aStepBtn = (TextView) inflater.inflate(R.layout.recipe_card_button,null);
+            aStepBtn.setText("Step "+i+" - "+aStepItem.getShortDesc());
+
+            aStepBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle arguments = new Bundle();
+                    arguments.putParcelable(RecipeStepFragment.RECIPE_STEP, aStepItem);
+                    RecipeStepFragment fragment = new RecipeStepFragment();
+                    fragment.setArguments(arguments);
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.recipe_detail_container, fragment, "recipe_step")
+                            .addToBackStack("recipe_step")
+                            .commit();
+                }
+            });
+
+            ((ViewGroup) rootView).addView(aStepBtn);
+        }
 
         return rootView;
     }

@@ -5,21 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginBottom="5dp"
+    android:padding="12dp"
     > <!-- android:background="@color/background" -->
 
-    <TextView
-        android:id="@+id/recipe_ingreds"
-        style="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="12dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="5dp"
-        android:textIsSelectable="false"
-        tools:context="annekenl.nanobaking.RecipeDetailFragment"
-        android:background="@drawable/white_rounded_card_shadow_border"
-    />
 
 </LinearLayout>

@@ -38,7 +38,7 @@ public class RecipeIngredsFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View rootView = inflater.inflate(R.layout.recipe_ingredients, container, false);
+        View rootView = inflater.inflate(R.layout.recipe_card_details_square, container, false);
 
         for(int i = 0; i < mIngreds.size(); i++)
         {
