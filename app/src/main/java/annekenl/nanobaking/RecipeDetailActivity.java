@@ -24,7 +24,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -41,16 +40,16 @@ public class RecipeDetailActivity extends AppCompatActivity {
         // http://developer.android.com/guide/components/fragments.html
         //
         if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
+            // Create the detail fragment and add it to the activity using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putParcelable(RecipeDetailFragment.RECIPE_ITEM_OBJ,
-                    getIntent().getParcelableExtra(RecipeDetailBaseFragment.RECIPE_ITEM_OBJ));
-            RecipeDetailBaseFragment fragment = new RecipeDetailBaseFragment();
+            arguments.putParcelable(RecipeDetailNavFragment.RECIPE_ITEM_OBJ,
+                    getIntent().getParcelableExtra(RecipeDetailNavFragment.RECIPE_ITEM_OBJ));
+
+            RecipeDetailNavFragment fragment = new RecipeDetailNavFragment();
             fragment.setArguments(arguments);
+
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.recipe_detail_container, fragment, "recipe_details")
-                    //.addToBackStack("recipe_details")
                     .commit();
         }
     }

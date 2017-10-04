@@ -9,10 +9,10 @@ import android.widget.TextView;
 import annekenl.nanobaking.recipedata.StepItem;
 
 /**
- * Created by annekenl1
+ * Displays and controls data for a single recipe step.
  */
 
-public class RecipeStepFragment extends RecipeDetailBaseFragment
+public class RecipeStepFragment extends RecipeDetailNavFragment
 {
     public static final String RECIPE_STEP = "recipe_step";
 
@@ -36,11 +36,6 @@ public class RecipeStepFragment extends RecipeDetailBaseFragment
     {
         View rootView = inflater.inflate(R.layout.recipe_card_details_square, container, false);
 
-        //View rootView = inflater.inflate(R.layout.recipe_detail_overview, container, false);
-        //View fragView = rootView.findViewById(R.id.recipe_detail_sub_frag_area);
-
-        //View stepView = inflater.inflate(R.layout.recipe_card_details_square, null);
-
         /* let's see step data to start */
         TextView genericTV = new TextView(getActivity());
 
@@ -49,9 +44,6 @@ public class RecipeStepFragment extends RecipeDetailBaseFragment
                 + mRecipeStep.getDescription() + "\n"
                 + mRecipeStep.getVideoUrl() + "\n"
                 + mRecipeStep.getThumbnailUrl());
-
-        //((ViewGroup) stepView).addView(genericTV);
-        //((ViewGroup) fragView).addView(stepView);
 
         ((ViewGroup) rootView).addView(genericTV);
 
@@ -63,7 +55,7 @@ public class RecipeStepFragment extends RecipeDetailBaseFragment
     {
         super.onViewCreated(view, savedInstanceState);
 
-        setupNavigationButtons(getArguments().getInt("frag_nav_id")); //test
+        setupNavigationButtons(getArguments().getInt(RecipeDetailNavFragment.RECIPE_PART_NAV_ID));
     }
 
 }

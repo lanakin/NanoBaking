@@ -12,10 +12,9 @@ import java.util.ArrayList;
 import annekenl.nanobaking.recipedata.IngredientItem;
 
 /**
- * A fragment representing a single Recipe list of ingredients.
- * This fragment is contained within the Recipe Detail layout.
+ * A fragment displaying a list of ingredients.
  */
-public class RecipeIngredsFragment extends RecipeDetailBaseFragment
+public class RecipeIngredsFragment extends RecipeDetailNavFragment
 {
     public static final String RECIPE_INGREDS = "recipe_ingreds";
 
@@ -38,9 +37,6 @@ public class RecipeIngredsFragment extends RecipeDetailBaseFragment
                              Bundle savedInstanceState)
     {
         View rootView = inflater.inflate(R.layout.recipe_card_details_square, container, false);
-       // View rootView = inflater.inflate(R.layout.recipe_detail_overview, container, false);
-
-        //View ingredsView = inflater.inflate(R.layout.recipe_card_details_square, null);
 
         for(int i = 0; i < mIngreds.size(); i++)
         {
@@ -54,10 +50,6 @@ public class RecipeIngredsFragment extends RecipeDetailBaseFragment
             ((ViewGroup) rootView).addView(currRow);
         }
 
-       // ((ViewGroup) rootView).addView(ingredsView);
-
-
-
         return rootView;
     }
 
@@ -66,7 +58,7 @@ public class RecipeIngredsFragment extends RecipeDetailBaseFragment
     {
         super.onViewCreated(view, savedInstanceState);
 
-        setupNavigationButtons(0); //test 0
+        setupNavigationButtons(getArguments().getInt(RecipeDetailNavFragment.RECIPE_PART_NAV_ID));  //test 0
     }
 
 }

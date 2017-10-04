@@ -88,7 +88,6 @@ public class RecipeListActivity extends AppCompatActivity
 
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        //recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
         mRecylerViewAdapter = new SimpleItemRecyclerViewAdapter(mRecipes);
         recyclerView.setAdapter(mRecylerViewAdapter);
     }
@@ -97,12 +96,9 @@ public class RecipeListActivity extends AppCompatActivity
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>
     {
-
-        //private final List<DummyContent.DummyItem> mValues;
         private final List<RecipeItem> mValues;
 
         public SimpleItemRecyclerViewAdapter(List<RecipeItem> items) {
-            //mValues = items;
             mValues = items;
         }
 
@@ -118,8 +114,6 @@ public class RecipeListActivity extends AppCompatActivity
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
             holder.nameView.setText(holder.mItem.getName());
-            //holder.mIdView.setText(mValues.get(position).id);
-            //holder.mContentView.setText(mValues.get(position).content);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -135,7 +129,7 @@ public class RecipeListActivity extends AppCompatActivity
                     } else {*/
                         Context context = v.getContext();
                         Intent intent = new Intent(context, RecipeDetailActivity.class);
-                        intent.putExtra(RecipeDetailBaseFragment.RECIPE_ITEM_OBJ, holder.mItem);
+                        intent.putExtra(RecipeDetailNavFragment.RECIPE_ITEM_OBJ, holder.mItem);
 
                         context.startActivity(intent);
                     //}
@@ -152,17 +146,14 @@ public class RecipeListActivity extends AppCompatActivity
         {
             public final View mView;
             public final TextView nameView;
-            //public final TextView mIdView;
-            //public final TextView mContentView;
-            //public DummyContent.DummyItem mItem;
+
             public RecipeItem mItem;
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
                 nameView = (TextView) view.findViewById(R.id.recipelist_name);
-               // mIdView = (TextView) view.findViewById(R.id.id);
-               // mContentView = (TextView) view.findViewById(R.id.content);
+
                 mItem = new RecipeItem();
             }
 
@@ -190,16 +181,11 @@ public class RecipeListActivity extends AppCompatActivity
             //return null;
 
             try {
-                // Construct the URL for The Movie Database API
                 final String TMDB_BASE_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
                 //final String API_PARAM = "api_key";
-                //final String PAGE_PARAM = "page";
-
 
                 Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
                         //.appendQueryParameter(API_PARAM, MOVIE_DB_API_KEY)
-                        //optional
-                        //.appendQueryParameter(PAGE_PARAM, "1")
                         .build();
 
                 URL url = new URL(builtUri.toString());
@@ -222,8 +208,7 @@ public class RecipeListActivity extends AppCompatActivity
                     buffer.append(line + "\n");
                 }
 
-                if (buffer.length() == 0) {
-                    // Stream was empty.  No point in parsing.
+                if (buffer.length() == 0) { // Stream was empty.  No point in parsing.
                     return null;
                 }
                 recipesJsonStr = buffer.toString();
@@ -254,7 +239,6 @@ public class RecipeListActivity extends AppCompatActivity
         protected void onPostExecute(String result)
         {
             if(result != null) {
-
                 parseRecipesJson(result);
             }
         }
@@ -279,8 +263,7 @@ public class RecipeListActivity extends AppCompatActivity
                     recipeItem.setName(currRecipe.getString("name"));
 
                 if(currRecipe.has("ingredients"))
-                {
-                    //create ingredients list
+                {       //create ingredients list
                     JSONArray ingredients = currRecipe.getJSONArray("ingredients");
                     ArrayList<IngredientItem> ingredientItems = new ArrayList<>();
 
@@ -303,8 +286,7 @@ public class RecipeListActivity extends AppCompatActivity
                 }
 
                 if(currRecipe.has("steps"))
-                {
-                    //create steps list
+                {       //create steps list
                     JSONArray steps = currRecipe.getJSONArray("steps");
                     ArrayList<StepItem> stepItems = new ArrayList<>();
 
@@ -338,7 +320,6 @@ public class RecipeListActivity extends AppCompatActivity
                 mRecipes.add(recipeItem);  //main recipes list
             }
 
-            //mMovieAdapter.notifyDataSetChanged();
             mRecylerViewAdapter.notifyDataSetChanged();
         }
         catch (Exception e) {

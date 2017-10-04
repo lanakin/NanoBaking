@@ -12,8 +12,8 @@
     android:padding="12dp"
     > <!-- android:background="@color/background" -->
 
-    <include layout="@layout/recipe_detail_sub_content"
-        android:id="@+id/recipe_detail_content"/>
+    <include layout="@layout/recipe_detail_content"
+        android:id="@+id/recipe_detail_base_content"/>
 
   <Button
         android:layout_width="wrap_content"
