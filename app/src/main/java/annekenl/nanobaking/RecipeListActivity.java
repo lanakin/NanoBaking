@@ -135,7 +135,7 @@ public class RecipeListActivity extends AppCompatActivity
                     } else {*/
                         Context context = v.getContext();
                         Intent intent = new Intent(context, RecipeDetailActivity.class);
-                        intent.putExtra(RecipeDetailFragment.RECIPE_ITEM_OBJ, holder.mItem);
+                        intent.putExtra(RecipeDetailBaseFragment.RECIPE_ITEM_OBJ, holder.mItem);
 
                         context.startActivity(intent);
                     //}
@@ -245,7 +245,7 @@ public class RecipeListActivity extends AppCompatActivity
                 }
             }
 
-            Log.d(FetchRecipesTask.class.getSimpleName(), recipesJsonStr);
+           // Log.d(FetchRecipesTask.class.getSimpleName(), recipesJsonStr);
 
             return recipesJsonStr;
         }

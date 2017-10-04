@@ -1,8 +1,6 @@
 package annekenl.nanobaking;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +10,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import annekenl.nanobaking.recipedata.RecipeItem;
-import annekenl.nanobaking.recipedata.StepItem;
 
 /**
  * A fragment representing a single Recipe detail screen.
@@ -20,20 +17,11 @@ import annekenl.nanobaking.recipedata.StepItem;
  * in two-pane mode (on tablets) or a {@link RecipeDetailActivity}
  * on handsets.
  */
-public class RecipeDetailFragment extends Fragment {
-    /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
-     */
-    //public static final String ARG_ITEM_ID = "item_id";
-    public static final String RECIPE_ITEM_OBJ = "recipe_item";
-
-    /**
-     * The dummy content this fragment is presenting.
-     */
-    //private DummyContent.DummyItem mItem;
+public class RecipeDetailFragment extends RecipeDetailBaseFragment
+{
     private RecipeItem mItem;
 
+    private ArrayList<TextView> recipeParts = new ArrayList<>();
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -51,71 +39,53 @@ public class RecipeDetailFragment extends Fragment {
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
 
-        if (getArguments().containsKey(RECIPE_ITEM_OBJ))
-        {
-           // mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
-            mItem = getArguments().getParcelable(RECIPE_ITEM_OBJ);
+       //if (getArguments().containsKey(RECIPE_ITEM_OBJ)) {
+            //mItem = getArguments().getParcelable(RECIPE_ITEM_OBJ);
+       // }
 
-            Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-            if (appBarLayout != null) {
-                appBarLayout.setTitle(mItem.getName());
-            }
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View rootView = inflater.inflate(R.layout.recipe_detail, container, false);
+        View rootView = inflater.inflate(R.layout.recipe_detail_sub_content, container, false);
 
-        /** INGREDIENTS **/
-        TextView ingredsBtn = (TextView) inflater.inflate(R.layout.recipe_card_button,null);
-        ingredsBtn.setText("Gather your Ingredients!");
 
-        ingredsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle arguments = new Bundle();
-                arguments.putParcelableArrayList(RecipeIngredsFragment.RECIPE_INGREDS, mItem.getIngredients());
-                RecipeIngredsFragment fragment = new RecipeIngredsFragment();
-                fragment.setArguments(arguments);
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.recipe_detail_container, fragment, "recipe_ingreds")
-                        .addToBackStack("recipe_ingreds")
-                        .commit();
-            }
-        });
+        /** Navigation **/
+        //etupNavigationButtons(NO_NAV_INDEX);
 
-        ((ViewGroup) rootView).addView(ingredsBtn);
+        int recipePartsSize = getRecipePartsSize();
+        if(recipePartsSize == 0)
+            return rootView;  //~no data
 
-        /** STEPS **/
-        ArrayList<StepItem> steps = mItem.getSteps();
-        for(int i = 0; i < steps.size(); i++)
+
+        // Create a 'list' of Recipe Parts' Buttons (ingredients list btn or a recipe step btn)
+        for(int i = 0; i < recipePartsSize; i++)
         {
-            final StepItem aStepItem = steps.get(i);
+            final Fragment currRecipePartDetailFrag = getRecipePart(i);
 
-            TextView aStepBtn = (TextView) inflater.inflate(R.layout.recipe_card_button,null);
-            aStepBtn.setText("Step "+i+" - "+aStepItem.getShortDesc());
+            TextView recipePartBtn = (TextView) inflater.inflate(R.layout.recipe_card_button,null);
+            recipePartBtn.setText(currRecipePartDetailFrag.getArguments().getString("frag_btn_title"));
 
-            aStepBtn.setOnClickListener(new View.OnClickListener() {
+            recipePartBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Bundle arguments = new Bundle();
-                    arguments.putParcelable(RecipeStepFragment.RECIPE_STEP, aStepItem);
-                    RecipeStepFragment fragment = new RecipeStepFragment();
-                    fragment.setArguments(arguments);
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.recipe_detail_container, fragment, "recipe_step")
-                            .addToBackStack("recipe_step")
-                            .commit();
+                    transitionToSubDetailFragment(currRecipePartDetailFrag); //,currRecipePartDetailFrag.getArguments().getString("frag_btn_title"));  //get frag at i
                 }
             });
 
-            ((ViewGroup) rootView).addView(aStepBtn);
+            ((ViewGroup) rootView).addView(recipePartBtn);
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(final View view, Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+
+        setupNavigationButtons(NO_NAV_INDEX);
     }
 }

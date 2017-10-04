@@ -45,8 +45,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
             // using a fragment transaction.
             Bundle arguments = new Bundle();
             arguments.putParcelable(RecipeDetailFragment.RECIPE_ITEM_OBJ,
-                    getIntent().getParcelableExtra(RecipeDetailFragment.RECIPE_ITEM_OBJ));
-            RecipeDetailFragment fragment = new RecipeDetailFragment();
+                    getIntent().getParcelableExtra(RecipeDetailBaseFragment.RECIPE_ITEM_OBJ));
+            RecipeDetailBaseFragment fragment = new RecipeDetailBaseFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.recipe_detail_container, fragment, "recipe_details")

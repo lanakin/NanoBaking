@@ -1,7 +1,6 @@
 package annekenl.nanobaking;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import annekenl.nanobaking.recipedata.IngredientItem;
  * A fragment representing a single Recipe list of ingredients.
  * This fragment is contained within the Recipe Detail layout.
  */
-public class RecipeIngredsFragment extends Fragment
+public class RecipeIngredsFragment extends RecipeDetailBaseFragment
 {
     public static final String RECIPE_INGREDS = "recipe_ingreds";
 
@@ -39,6 +38,9 @@ public class RecipeIngredsFragment extends Fragment
                              Bundle savedInstanceState)
     {
         View rootView = inflater.inflate(R.layout.recipe_card_details_square, container, false);
+       // View rootView = inflater.inflate(R.layout.recipe_detail_overview, container, false);
+
+        //View ingredsView = inflater.inflate(R.layout.recipe_card_details_square, null);
 
         for(int i = 0; i < mIngreds.size(); i++)
         {
@@ -52,7 +54,19 @@ public class RecipeIngredsFragment extends Fragment
             ((ViewGroup) rootView).addView(currRow);
         }
 
+       // ((ViewGroup) rootView).addView(ingredsView);
+
+
+
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(final View view, Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+
+        setupNavigationButtons(0); //test 0
     }
 
 }
