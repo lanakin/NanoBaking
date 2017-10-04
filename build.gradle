@@ -15,6 +15,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+       // google() //exoplayer says i need this but fails with gradle
     }
 }
 

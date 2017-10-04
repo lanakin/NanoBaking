@@ -28,7 +28,7 @@ public class RecipeDetailNavFragment extends Fragment
     public static final int NO_NAV_INDEX = -1;
 
     private RecipeItem mItem;
-    public static final ArrayList<Fragment> mNavigationList = new ArrayList<>(); //store 'recipe parts' - ingredients or
+    public static ArrayList<Fragment> mNavigationList;//store 'recipe parts' - ingredients or
         //a single recipe step as their respective fragments, in order, for user to easily navigate back and forth through.
 
     private Button prevNavBtn;
@@ -46,47 +46,51 @@ public class RecipeDetailNavFragment extends Fragment
     {
         super.onCreate(savedInstanceState);
 
-        try {
-            if (getArguments().containsKey(RECIPE_ITEM_OBJ)) {
-                mItem = getArguments().getParcelable(RECIPE_ITEM_OBJ);
+        if(savedInstanceState==null) {
+            try {
+                if (getArguments().containsKey(RECIPE_ITEM_OBJ)) { //passed in from RecipeDetailActivity
+                    mItem = getArguments().getParcelable(RECIPE_ITEM_OBJ);
 
-                Activity activity = this.getActivity();
-                CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
-                if (appBarLayout != null && mItem != null) {
-                    appBarLayout.setTitle(mItem.getName());
+                    Activity activity = this.getActivity();
+                    CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
+                    if (appBarLayout != null && mItem != null) {
+                        appBarLayout.setTitle(mItem.getName());
+                    }
+
+                    mNavigationList = new ArrayList<>();
                 }
-            }
 
-            if (mItem != null) {
-                /** INGREDIENTS **/
-                Bundle arguments = new Bundle();
-                arguments.putParcelableArrayList(RecipeIngredsFragment.RECIPE_INGREDS, mItem.getIngredients());
-                arguments.putString(RECIPE_PART_BTN_TITLE, "Gather your Ingredients!");
-                arguments.putInt(RECIPE_PART_NAV_ID, 0);
+                if (mItem != null) {
+                    /** INGREDIENTS **/
+                    Bundle arguments = new Bundle();
+                    arguments.putParcelableArrayList(RecipeIngredsFragment.RECIPE_INGREDS, mItem.getIngredients());
+                    arguments.putString(RECIPE_PART_BTN_TITLE, "Gather your Ingredients!");
+                    arguments.putInt(RECIPE_PART_NAV_ID, 0);
 
-                RecipeIngredsFragment fragment = new RecipeIngredsFragment();
-                fragment.setArguments(arguments);
+                    RecipeIngredsFragment fragment = new RecipeIngredsFragment();
+                    fragment.setArguments(arguments);
 
-                mNavigationList.add(fragment);
+                    mNavigationList.add(fragment);
 
-                /** STEPS **/
-                ArrayList<StepItem> steps = mItem.getSteps();
-                for (int i = 0; i < steps.size(); i++) {
-                    StepItem aStepItem = steps.get(i);
+                    /** STEPS **/
+                    ArrayList<StepItem> steps = mItem.getSteps();
+                    for (int i = 0; i < steps.size(); i++) {
+                        StepItem aStepItem = steps.get(i);
 
-                    Bundle arguments2 = new Bundle();
-                    arguments2.putParcelable(RecipeStepFragment.RECIPE_STEP, aStepItem);
-                    arguments2.putString(RECIPE_PART_BTN_TITLE, "Step " + i + " - " + aStepItem.getShortDesc());
-                    arguments2.putInt(RECIPE_PART_NAV_ID, i + 1);
+                        Bundle arguments2 = new Bundle();
+                        arguments2.putParcelable(RecipeStepFragment.RECIPE_STEP, aStepItem);
+                        arguments2.putString(RECIPE_PART_BTN_TITLE, "Step " + aStepItem.getId() + " - " + aStepItem.getShortDesc());
+                        arguments2.putInt(RECIPE_PART_NAV_ID, i + 1);
 
-                    RecipeStepFragment fragment2 = new RecipeStepFragment();
-                    fragment2.setArguments(arguments2);
+                        RecipeStepFragment fragment2 = new RecipeStepFragment();
+                        fragment2.setArguments(arguments2);
 
-                    mNavigationList.add(fragment2);
+                        mNavigationList.add(fragment2);
+                    }
                 }
+            } catch (Exception e) {
+               e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
