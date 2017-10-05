@@ -34,4 +34,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 
     compile 'com.google.android.exoplayer:exoplayer:r2.5.3' //latest
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

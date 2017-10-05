@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -23,8 +24,12 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 import annekenl.nanobaking.recipedata.StepItem;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Displays and controls data for a single recipe step.
@@ -39,9 +44,15 @@ public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPl
     public RecipeStepFragment() {}
 
     private SimpleExoPlayer mExoPlayer;
-    private SimpleExoPlayerView mPlayerView;
+
+    //private SimpleExoPlayerView mPlayerView;
+    //private ImageView mImageView;
+    @BindView(R.id.stepPlayerView) SimpleExoPlayerView mPlayerView;
+    @BindView(R.id.stepImageView) ImageView mImageView;
+    private Unbinder unbinder;
 
     private String testUrl = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffdb88_6-add-the-batter-to-the-pan-w-the-crumbs-cheesecake/6-add-the-batter-to-the-pan-w-the-crumbs-cheesecake.mp4";
+    private String droidChefUrl = "http://cdn04.androidauthority.net/wp-content/uploads/2012/08/Android-chef.jpg";
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -58,26 +69,48 @@ public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPl
                              Bundle savedInstanceState)
     {
         View rootView = inflater.inflate(R.layout.recipe_step, container, false);
+        unbinder = ButterKnife.bind(this,rootView);
 
-        // Initialize the player view.
-        mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.playerView);
-
+        /* RECIPE STEP TEXT */
         View cardView = inflater.inflate(R.layout.recipe_card_details_square, container, false);
-
-        /* let's see step data to start */
         TextView genericTV = new TextView(getActivity());
 
-        genericTV.setText("ID: " + mRecipeStep.getId()+ "\n" +
+        /* let's see step data to start */
+        /*genericTV.setText("ID: " + mRecipeStep.getId()+ "\n" +
                 "Short Desc: " + mRecipeStep.getShortDesc() + "\n" +
                 "Desc: " + mRecipeStep.getDescription() + "\n" +
                 "Video Url: " + mRecipeStep.getVideoUrl() + "\n" +
-                "Thumbnail Url: " + mRecipeStep.getThumbnailUrl());
+                "Thumbnail Url: " + mRecipeStep.getThumbnailUrl());*/
+
+        genericTV.setText(mRecipeStep.getShortDesc() + "\n\n" +
+                mRecipeStep.getDescription() + "\n");
 
         ((ViewGroup) cardView).addView(genericTV);
         ((ViewGroup) rootView).addView(cardView);
 
-        // Initialize the player.
-        initializePlayer(Uri.parse(testUrl));
+        /* VIDEO AND IMAGE */
+        String vidUrl = mRecipeStep.getVideoUrl();
+
+        if(!vidUrl.isEmpty())
+            initializePlayer(Uri.parse(vidUrl));  // Initialize the player.
+        else {
+            //default img ...
+            mPlayerView.setVisibility(View.GONE);
+            mImageView.setVisibility(View.VISIBLE);
+            String imgUrl = mRecipeStep.getThumbnailUrl();
+
+            if(!imgUrl.isEmpty())
+                Picasso.with(getContext()).load(imgUrl).noFade()
+                        .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+                        .into(mImageView);
+            else {
+                Picasso.with(getContext()).load(droidChefUrl).noFade()
+                        .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+                        .into(mImageView);
+            }
+        }
+        //mPlayerView.setDefaultArtwork(
+        //BitmapFactory.decodeResource(getResources(), R.drawable.question_mark));
 
         return rootView;
     }
@@ -175,7 +208,20 @@ public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPl
     @Override
     public void onDestroy() {
         super.onDestroy();
-        releasePlayer();
-        //mMediaSession.setActive(false);
+
+        try {
+            releasePlayer();
+            //mMediaSession.setActive(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // When binding a fragment in onCreateView, set the views to null in onDestroyView.
+    // ButterKnife returns an Unbinder on the initial binding that has an unbind method to do this automatically.
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

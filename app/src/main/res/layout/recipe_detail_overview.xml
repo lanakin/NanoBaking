@@ -20,6 +20,7 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:weightSum="2"
+        android:gravity="center_horizontal"
         >
           <Button
                 android:layout_width="0dp"
