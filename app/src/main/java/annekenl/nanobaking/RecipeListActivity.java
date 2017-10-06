@@ -2,10 +2,12 @@ package annekenl.nanobaking;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -40,8 +42,7 @@ import annekenl.nanobaking.recipedata.StepItem;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class RecipeListActivity extends AppCompatActivity
-{
+public class RecipeListActivity extends AppCompatActivity { //implements RecyclerView.OnItemTouchListener {
     private ArrayList<RecipeItem> mRecipes = new ArrayList<RecipeItem>();
     private SimpleItemRecyclerViewAdapter mRecylerViewAdapter;
 
@@ -97,6 +98,7 @@ public class RecipeListActivity extends AppCompatActivity
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>
     {
         private final List<RecipeItem> mValues;
+        private String selectedRecipeTitle = "";
 
         public SimpleItemRecyclerViewAdapter(List<RecipeItem> items) {
             mValues = items;
@@ -111,28 +113,41 @@ public class RecipeListActivity extends AppCompatActivity
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, final int position)
+        {
             holder.mItem = mValues.get(position);
             holder.nameView.setText(holder.mItem.getName());
 
+            if(holder.nameView.getText().equals(selectedRecipeTitle))
+                holder.nameView.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.selected_color));
+            else
+                holder.nameView.setTextColor(Color.BLACK);
+
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                   /* if (mTwoPane) {
+                public void onClick(View v)
+                {
+                    selectedRecipeTitle = holder.nameView.getText()+"";
+                    notifyDataSetChanged(); //show highlighted selected item
+
+                    if (mTwoPane) {
+                        // Create the detail fragment and add it to the activity using a fragment transaction.
                         Bundle arguments = new Bundle();
-                        arguments.putString(RecipeDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-                        RecipeDetailFragment fragment = new RecipeDetailFragment();
+                        arguments.putParcelable(RecipeDetailNavFragment.RECIPE_ITEM_OBJ, holder.mItem);
+
+                        RecipeDetailNavFragment fragment = new RecipeDetailNavFragment();
                         fragment.setArguments(arguments);
+
                         getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.recipe_detail_container, fragment)
+                                .replace(R.id.recipe_detail_container, fragment, "recipe_details")
                                 .commit();
-                    } else {*/
+                    } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, RecipeDetailActivity.class);
                         intent.putExtra(RecipeDetailNavFragment.RECIPE_ITEM_OBJ, holder.mItem);
 
                         context.startActivity(intent);
-                    //}
+                    }
                 }
             });
         }
@@ -141,6 +156,7 @@ public class RecipeListActivity extends AppCompatActivity
         public int getItemCount() {
             return mValues.size();
         }
+
 
         public class ViewHolder extends RecyclerView.ViewHolder
         {

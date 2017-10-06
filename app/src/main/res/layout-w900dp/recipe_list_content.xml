@@ -3,16 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    > <!-- android:background="?android:attr/selectableItemBackground" -->
 
     <TextView
         android:id="@+id/recipelist_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
+        android:layout_margin="@dimen/text_margin_tablet"
         android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="25sp"
         tools:text="Nutella Pie"
-        /> <!--  android:textAppearance="?attr/textAppearanceListItem" -->
+        />
 
   <!--  <TextView
         android:id="@+id/id"

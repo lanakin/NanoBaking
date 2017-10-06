@@ -1,13 +1,13 @@
 package annekenl.nanobaking;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
 import java.util.ArrayList;
 
 import annekenl.nanobaking.recipedata.RecipeItem;
@@ -26,6 +26,7 @@ public class RecipeDetailNavFragment extends Fragment
     public static final String RECIPE_PART_BTN_TITLE = "rp_btn_title";
     public static final String RECIPE_PART_NAV_ID = "rp_nav_id";
     public static final int NO_NAV_INDEX = -1;
+    //public static boolean mTwoPane;
 
     private RecipeItem mItem;
     public static ArrayList<Fragment> mNavigationList;//store 'recipe parts' - ingredients or
@@ -33,6 +34,7 @@ public class RecipeDetailNavFragment extends Fragment
 
     private Button prevNavBtn;
     private Button nextNavBtn;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -48,13 +50,20 @@ public class RecipeDetailNavFragment extends Fragment
 
         if(savedInstanceState==null) {
             try {
+
+               /* if (getActivity().findViewById(R.id.recipe_list) != null) {
+                    // Two pane mode on tablets - recipe list is visible on the left side
+                    mTwoPane = true;
+                }*/
+
                 if (getArguments().containsKey(RECIPE_ITEM_OBJ)) { //passed in from RecipeDetailActivity
                     mItem = getArguments().getParcelable(RECIPE_ITEM_OBJ);
 
-                    Activity activity = this.getActivity();
-                    CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
-                    if (appBarLayout != null && mItem != null) {
-                        appBarLayout.setTitle(mItem.getName());
+                    AppCompatActivity activity = (AppCompatActivity) this.getActivity();
+                    //CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
+
+                    if (activity.getSupportActionBar() != null && mItem != null) {
+                        activity.getSupportActionBar().setTitle(mItem.getName());
                     }
 
                     mNavigationList = new ArrayList<>();

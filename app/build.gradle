@@ -35,4 +35,12 @@ dependencies {
 
     compile 'com.google.android.exoplayer:exoplayer:r2.5.3' //latest
     compile 'com.squareup.picasso:picasso:2.5.2'
+
+    //**RECYLER VIEW HELPER library**
+    // Required , so make sure your support libs are updated in the android sdk
+    //compile "com.android.support:appcompat-v7:{latest version}'  //already have
+    // compile "com.android.support:recyclerview-v7:{latest version}' //already have
+
+    // RecyclerViewHelper
+    //compile 'com.github.nisrulz:recyclerviewhelper:26.0.0'
 }

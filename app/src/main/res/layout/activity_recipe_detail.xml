@@ -6,7 +6,7 @@
     android:fitsSystemWindows="true"
     tools:context="annekenl.nanobaking.RecipeDetailActivity"
     tools:ignore="MergeRootFrame"
-    android:background="@color/background"
+    android:background="@color/app_background"
     >
 
     <android.support.design.widget.AppBarLayout
