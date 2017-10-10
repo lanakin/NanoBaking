@@ -27,14 +27,18 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="prev"
-                android:id="@+id/prevBtn" />
+                android:id="@+id/prevBtn"
+                style="?android:attr/textAppearanceLarge"
+              />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="next"
-                android:id="@+id/nextBtn"/>
+                android:id="@+id/nextBtn"
+                style="?android:attr/textAppearanceLarge"
+                />
     </LinearLayout>
 
 </LinearLayout>

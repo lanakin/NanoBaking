@@ -21,7 +21,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/recipe_list"
         android:name="annekenl.nanobaking.RecipeListFragment"
-        android:layout_width="@dimen/item_width"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
@@ -44,6 +45,16 @@
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
-        />
+        >
+
+      <!--  <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:src="@drawable/android_cook_kitchen"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            />-->
+
+    </android.support.v4.widget.NestedScrollView>
 
 </LinearLayout>

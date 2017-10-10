@@ -82,6 +82,14 @@ public class RecipeListActivity extends AppCompatActivity { //implements Recycle
             // If this view is present, then the
             // activity should be in two-pane mode.
             mTwoPane = true;
+
+            Bundle arguments = new Bundle();
+            RecipeDetailPlaceholder fragment = new RecipeDetailPlaceholder();
+            fragment.setArguments(arguments);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.recipe_detail_container, fragment, "recipe_details")
+                    .commit();
         }
     }
 

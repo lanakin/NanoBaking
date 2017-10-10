@@ -6,12 +6,12 @@
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/stepPlayerView"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="320dp"
        />
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="320dp"
         android:id="@+id/stepImageView"
         android:visibility="gone"
         />

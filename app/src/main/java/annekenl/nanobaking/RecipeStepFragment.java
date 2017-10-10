@@ -85,6 +85,11 @@ public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPl
         genericTV.setText(mRecipeStep.getShortDesc() + "\n\n" +
                 mRecipeStep.getDescription() + "\n");
 
+        if(RecipeDetailNavFragment.mTwoPane)
+            setTextAppearance(getContext(),R.style.TextAppearance_AppCompat_Medium,genericTV);
+        else
+            setTextAppearance(getContext(),R.style.TextAppearance_AppCompat_Small,genericTV);
+
         ((ViewGroup) cardView).addView(genericTV);
         ((ViewGroup) rootView).addView(cardView);
 

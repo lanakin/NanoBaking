@@ -1,5 +1,7 @@
 package annekenl.nanobaking;
 
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -26,7 +29,7 @@ public class RecipeDetailNavFragment extends Fragment
     public static final String RECIPE_PART_BTN_TITLE = "rp_btn_title";
     public static final String RECIPE_PART_NAV_ID = "rp_nav_id";
     public static final int NO_NAV_INDEX = -1;
-    //public static boolean mTwoPane;
+    public static boolean mTwoPane;
 
     private RecipeItem mItem;
     public static ArrayList<Fragment> mNavigationList;//store 'recipe parts' - ingredients or
@@ -51,10 +54,10 @@ public class RecipeDetailNavFragment extends Fragment
         if(savedInstanceState==null) {
             try {
 
-               /* if (getActivity().findViewById(R.id.recipe_list) != null) {
+                if (getActivity().findViewById(R.id.recipe_list) != null) {
                     // Two pane mode on tablets - recipe list is visible on the left side
                     mTwoPane = true;
-                }*/
+                }
 
                 if (getArguments().containsKey(RECIPE_ITEM_OBJ)) { //passed in from RecipeDetailActivity
                     mItem = getArguments().getParcelable(RECIPE_ITEM_OBJ);
@@ -171,6 +174,17 @@ public class RecipeDetailNavFragment extends Fragment
         }
         else
             nextNavBtn.setVisibility(View.GONE);
+    }
+
+
+    //general
+    public void setTextAppearance(Context context, int resId, TextView tv)
+    {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            tv.setTextAppearance(context, resId);
+        } else {
+            tv.setTextAppearance(resId);
+        }
     }
 
 }
