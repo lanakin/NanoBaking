@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 
 
 /**
- * Created by annekenl1
+ * On tablet view -this fragment is loaded at start up to  show a background image in the
+ * detail container before a recipe is chosen.
  */
 
 public class RecipeDetailPlaceholder extends Fragment

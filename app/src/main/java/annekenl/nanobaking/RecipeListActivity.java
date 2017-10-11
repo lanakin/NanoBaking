@@ -57,7 +57,7 @@ public class RecipeListActivity extends AppCompatActivity { //implements Recycle
 
         getRecipeData(); //**
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.maintoolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
