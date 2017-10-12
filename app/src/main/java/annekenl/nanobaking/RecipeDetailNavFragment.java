@@ -76,7 +76,7 @@ public class RecipeDetailNavFragment extends Fragment
                     /** INGREDIENTS **/
                     Bundle arguments = new Bundle();
                     arguments.putParcelableArrayList(RecipeIngredsFragment.RECIPE_INGREDS, mItem.getIngredients());
-                    arguments.putString(RECIPE_PART_BTN_TITLE, "Gather your Ingredients!");
+                    arguments.putString(RECIPE_PART_BTN_TITLE, getString(R.string.detail_ingredients_button));
                     arguments.putInt(RECIPE_PART_NAV_ID, 0);
 
                     RecipeIngredsFragment fragment = new RecipeIngredsFragment();

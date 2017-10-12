@@ -9,6 +9,7 @@
         android:src="@drawable/android_cook_kitchen"
         android:layout_margin="10dp"
         android:layout_gravity="center"
+        android:id="@+id/startup_default_img"
         />
 
 </LinearLayout>

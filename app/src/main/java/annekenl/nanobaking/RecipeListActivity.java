@@ -270,7 +270,7 @@ public class RecipeListActivity extends AppCompatActivity { //implements Recycle
     }
 
 
-    private void parseRecipesJson(String json)
+    protected void parseRecipesJson(String json)
     {
         try
         {

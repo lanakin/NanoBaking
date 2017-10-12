@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    > <!-- android:background="?android:attr/selectableItemBackground" -->
+    > --> <!-- android:background="?android:attr/selectableItemBackground" -->
 
-    <TextView
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"  xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/recipelist_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,4 +29,5 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem" />-->
-</LinearLayout>
+
+<!--</LinearLayout>-->

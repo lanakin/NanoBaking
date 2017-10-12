@@ -23,7 +23,8 @@ import static org.hamcrest.core.AllOf.allOf;
 /**
  *  Model after example test in Udacity Lesson Project - 'Tea Time'
  *
- *
+ * Click on a item in the main Recipe List to choose a Recipe and test
+ * that the chosen Recipe Details are shown.
  */
 
 @RunWith(AndroidJUnit4.class)
@@ -48,11 +49,9 @@ public class RecipeListUITest
      * and added to a 'recipe_detail_container'.)
      */
     @Test
-    public void clickGridViewItem_OpensOrderActivity() {
-
-            // Uses {@link Espresso#onData(org.hamcrest.Matcher)} to get a reference to a specific
-            // recyclerview item and clicks it.
-             //onData(anything()).inAdapterView(withId(R.id.recipe_list)).atPosition(1).perform(click());  //**not for a recycler view
+    public void clickRecipeTitleItem()
+    {
+        //**not for a recycler view //onData(anything()).inAdapterView(withId(R.id.recipe_list)).atPosition(1).perform(click());
 
         /*RecyclerView works differently than AdapterView. In fact, RecyclerView is not an AdapterView anymore, hence it can't be used in combination with onData(Matcher).
         To use ViewActions in this class use onView(Matcher) with a Matcher that matches your RecyclerView, then perform a ViewAction from this class. */
@@ -63,7 +62,6 @@ public class RecipeListUITest
         onView(withId(main_toolbar)).check(matches(isDisplayed()));
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.main_toolbar))))
                 .check(matches(withText(RECIPE_NAME)));
-
 
     }
 

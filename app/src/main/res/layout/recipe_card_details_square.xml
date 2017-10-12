@@ -4,7 +4,7 @@
 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/recipe_ingreds_list"
+    android:id="@+id/recipe_card_square"
 
     android:padding="12dp"
     android:layout_marginTop="10dp"

@@ -11,6 +11,5 @@
     android:textIsSelectable="false"
     tools:context="annekenl.nanobaking.RecipeDetailNavBtnsFragment"
     android:background="@drawable/white_rounded_card_shadow_border"
-
     />
 
