@@ -30,6 +30,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="annekenl.nanobaking.RecipeListActivity" />
         </activity>
+
+        <receiver android:name="annekenl.nanobaking.widget.MyWidgetProvider" android:label="Recipe Ingredients">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/my_widget" />
+        </receiver>
+
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package annekenl.nanobaking.dummy;
+package annekenl.nanobaking.recipedata.dummy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
