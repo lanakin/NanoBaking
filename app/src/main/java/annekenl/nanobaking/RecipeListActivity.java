@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import android.content.SharedPreferences;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -42,7 +44,11 @@ import annekenl.nanobaking.recipedata.StepItem;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class RecipeListActivity extends AppCompatActivity { //implements RecyclerView.OnItemTouchListener {
+public class RecipeListActivity extends AppCompatActivity
+{
+    public static final String NANOBAKING_PREFS = "nano_baking_prefs";
+    public static final String RECIPE_JSON_KEY = "recipe_json_key";
+
     private ArrayList<RecipeItem> mRecipes = new ArrayList<RecipeItem>();
     private SimpleItemRecyclerViewAdapter mRecylerViewAdapter;
 
@@ -263,6 +269,11 @@ public class RecipeListActivity extends AppCompatActivity { //implements Recycle
         protected void onPostExecute(String result)
         {
             if(result != null) {
+                //future enhancement stored parsed data in a database; in interest of time using shared prefs.
+                SharedPreferences.Editor editor = getSharedPreferences(NANOBAKING_PREFS, MODE_PRIVATE).edit();
+                editor.putString(RECIPE_JSON_KEY,result);
+                editor.apply();
+
                 parseRecipesJson(result);
             }
         }

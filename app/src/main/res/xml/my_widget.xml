@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:initialLayout="@layout/my_widget_basic_layout"
+    android:initialLayout="@layout/my_widget_list_layout"
 
     android:updatePeriodMillis="0"
+    android:minWidth="146dp"
+    android:minHeight="146dp"
+    android:resizeMode="horizontal|vertical"
+    android:widgetCategory="home_screen"
 
      />  <!-- how often onUpdate is called in the widget provider -->
 
-<!-- android:resizeMode="horizontal"
+<!--
+  width (x * 74) - 2
+  height (x * 74) - 2
+
+android:resizeMode="horizontal"
         android:previewImage="@drawable/simple_widget_preview"
-        tools:ignore="UnusedAttribute" -->
+        tools:ignore="UnusedAttribute"
+
+        android:initialLayout="@layout/my_widget_basic_layout"
+
+        -->
