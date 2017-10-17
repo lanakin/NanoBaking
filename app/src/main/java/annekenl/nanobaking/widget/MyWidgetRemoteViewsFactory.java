@@ -92,7 +92,8 @@ public class MyWidgetRemoteViewsFactory implements RemoteViewsService.RemoteView
                 mWidgetRecipes.get(position).getName());
         fillInIntent.putExtras(bundle);
 
-        rv.setOnClickFillInIntent(android.R.id.text1, fillInIntent);
+        rv.setOnClickFillInIntent(R.id.myWidgetListItemRow, fillInIntent); //android.R.id.text1 (oops didn't change this from ex)
+                                                    // - root view of item layout
 
         return rv;
     }
