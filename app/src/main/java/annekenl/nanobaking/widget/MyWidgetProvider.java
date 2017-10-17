@@ -1,9 +1,14 @@
 package annekenl.nanobaking.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.TaskStackBuilder;
+import android.net.Uri;
+import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import annekenl.nanobaking.R;
 
@@ -28,13 +33,32 @@ import annekenl.nanobaking.R;
  * public void onDisabled(android.content.Context context) { }
  * public void onRestored(android.content.Context context, int[] oldWidgetIds, int[] newWidgetIds) { }
  *
- * Modeled from reference material - Udacity Android Nanodegree - Lesson 7 widgets, https://www.androidauthority.com/create-simple-android-widget-608975/,
- * https://www.sitepoint.com/killer-way-to-show-a-list-of-items-in-android-collection-widget/ & https://www.sitepoint.com/how-to-code-an-android-widget/.
+ * Modeled from reference material - Udacity Android Nanodegree - Lesson 7 widgets,
+ * https://www.androidauthority.com/create-simple-android-widget-608975/,
+ * https://www.sitepoint.com/killer-way-to-show-a-list-of-items-in-android-collection-widget/,
+ * https://www.sitepoint.com/how-to-code-an-android-widget/,
+ * http://dharmangsoni.blogspot.com/2014/03/collection-widget-with-event-handling.html
  */
 
 public class MyWidgetProvider extends AppWidgetProvider
 {
+    public static final String ACTION_TOAST = "annekenl.nanobaking.widget.MyWidgetProvider.ACTION_TOAST";
+    public static final String TOAST_STRING = "annekenl.nanobaking.widget.MyWidgetProvider.TOAST_STRING";
+
     public MyWidgetProvider() { }
+
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        Log.d("widgetprovider","onreceive called");
+        if (intent.getAction().equals(ACTION_TOAST)) {
+            String item = intent.getExtras().getString(TOAST_STRING);
+            Toast.makeText(context, item, Toast.LENGTH_LONG).show();
+            Log.d("action_toast",item);
+        }
+
+        super.onReceive(context, intent);
+    }
 
     /**
      * Called in response to the ACTION_APPWIDGET_UPDATE and ACTION_APPWIDGET_RESTORED
@@ -48,23 +72,28 @@ public class MyWidgetProvider extends AppWidgetProvider
         for (int i = 0; i < appWidgetIds.length; i++) {
             int appWidgetId = appWidgetIds[i];
 
-            // Create an Intent to launch Activity
-            //Intent intent = new Intent(context, RecipeListActivity.class);
-            //PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0); //context, request code, intent, flags
-
-            // Get the layout for the App Widget and attach an on-click listener to the button
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.my_widget_list_layout);
                                                                             //R.layout.my_widget_basic_layout
             // setting an empty view in case of no data
             remoteViews.setEmptyView(R.id.myWidgetListView, R.id.myWidgetListEmptyView);
 
-            //views.setOnClickPendingIntent(R.id.button, pendingIntent);
-
-            // To update a label
-            //views.setTextViewText(R.id.widget1label, df.format(new Date()));
-
             Intent intent = new Intent(context, MyWidgetRemoteViewsService.class);
             remoteViews.setRemoteAdapter(R.id.myWidgetListView, intent);
+
+            // Adding collection list item handler
+            // template to handle the click listener for each item  -getView() 'fills in' each item's intent~
+            final Intent onItemClick = new Intent(context, MyWidgetProvider.class);
+
+            onItemClick.setAction(ACTION_TOAST);
+            onItemClick.setData(Uri.parse(onItemClick
+                    .toUri(Intent.URI_INTENT_SCHEME)));
+
+            final PendingIntent onClickPendingIntent = PendingIntent
+                    .getBroadcast(context, 0, onItemClick,
+                            PendingIntent.FLAG_UPDATE_CURRENT);
+
+            remoteViews.setPendingIntentTemplate(R.id.myWidgetListView,
+                    onClickPendingIntent);
 
             // Tell the AppWidgetManager to perform an update on the current app widget
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);

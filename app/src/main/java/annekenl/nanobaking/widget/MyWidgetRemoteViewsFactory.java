@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Bundle;
 import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -31,6 +32,7 @@ import static annekenl.nanobaking.RecipeListActivity.RECIPE_JSON_KEY;
  * Udacity Android Nanodegree widget lessons
  * http://www.vogella.com/tutorials/AndroidWidgets/article.html
  * https://laaptu.wordpress.com/2013/07/24/populate-appwidget-listview-with-remote-datadata-from-web/
+ * and others listed in MyWidgetProvider.
  */
 
 public class MyWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
@@ -82,9 +84,15 @@ public class MyWidgetRemoteViewsFactory implements RemoteViewsService.RemoteView
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.my_widget_list_row);
         rv.setTextViewText(R.id.myWidgetListItemTV, mWidgetRecipes.get(position).getName()); //recipe names then ingreds...
 
-        //Intent fillInIntent = new Intent();
-        //fillInIntent.putExtra(CollectionAppWidgetProvider.EXTRA_LABEL, mCursor.getString(1));
-        //rv.setOnClickFillInIntent(R.id.widgetItemContainer, fillInIntent);
+        final Intent fillInIntent = new Intent();
+        fillInIntent.setAction(MyWidgetProvider.ACTION_TOAST);
+
+        final Bundle bundle = new Bundle();
+        bundle.putString(MyWidgetProvider.TOAST_STRING,
+                mWidgetRecipes.get(position).getName());
+        fillInIntent.putExtras(bundle);
+
+        rv.setOnClickFillInIntent(android.R.id.text1, fillInIntent);
 
         return rv;
     }
