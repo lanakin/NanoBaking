@@ -51,7 +51,7 @@ public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPl
     @BindView(R.id.stepImageView) ImageView mImageView;
     private Unbinder unbinder;
 
-    private String testUrl = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffdb88_6-add-the-batter-to-the-pan-w-the-crumbs-cheesecake/6-add-the-batter-to-the-pan-w-the-crumbs-cheesecake.mp4";
+    //private String testUrl = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffdb88_6-add-the-batter-to-the-pan-w-the-crumbs-cheesecake/6-add-the-batter-to-the-pan-w-the-crumbs-cheesecake.mp4";
     private String droidChefUrl = "http://cdn04.androidauthority.net/wp-content/uploads/2012/08/Android-chef.jpg";
 
     @Override
@@ -74,13 +74,6 @@ public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPl
         /* RECIPE STEP TEXT */
         View cardView = inflater.inflate(R.layout.recipe_card_details_square, container, false);
         TextView genericTV = new TextView(getActivity());
-
-        /* let's see step data to start */
-        /*genericTV.setText("ID: " + mRecipeStep.getId()+ "\n" +
-                "Short Desc: " + mRecipeStep.getShortDesc() + "\n" +
-                "Desc: " + mRecipeStep.getDescription() + "\n" +
-                "Video Url: " + mRecipeStep.getVideoUrl() + "\n" +
-                "Thumbnail Url: " + mRecipeStep.getThumbnailUrl());*/
 
         genericTV.setText(mRecipeStep.getShortDesc() + "\n\n" +
                 mRecipeStep.getDescription() + "\n");
@@ -114,8 +107,6 @@ public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPl
                         .into(mImageView);
             }
         }
-        //mPlayerView.setDefaultArtwork(
-        //BitmapFactory.decodeResource(getResources(), R.drawable.question_mark));
 
         return rootView;
     }

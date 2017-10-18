@@ -9,7 +9,7 @@
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
 
-     />  <!-- how often onUpdate is called in the widget provider -->
+     />  <!-- updateperiodmillis how often onUpdate is called in the widget provider -->
 
 <!--
   width (x * 74) - 2

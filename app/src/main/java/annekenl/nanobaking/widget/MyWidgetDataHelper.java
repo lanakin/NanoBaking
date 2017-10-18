@@ -16,7 +16,7 @@ import static annekenl.nanobaking.RecipeListActivity.NANOBAKING_PREFS;
 import static annekenl.nanobaking.RecipeListActivity.RECIPE_JSON_KEY;
 
 /**
- * Created by annekenl1
+ * Created by annekenl
  *
  * Helper class for widget data in place of a database solution for now.
  */

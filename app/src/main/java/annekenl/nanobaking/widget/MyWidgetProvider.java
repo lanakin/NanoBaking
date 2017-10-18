@@ -32,7 +32,7 @@ import annekenl.nanobaking.R;
  * public void onDisabled(android.content.Context context) { }
  * public void onRestored(android.content.Context context, int[] oldWidgetIds, int[] newWidgetIds) { }
  *
- * Modeled from reference material - Udacity Android Nanodegree - Lesson 7 widgets,
+ * Reference material - Udacity Android Nanodegree - Lesson 7 widgets,
  * https://www.androidauthority.com/create-simple-android-widget-608975/,
  * https://www.sitepoint.com/killer-way-to-show-a-list-of-items-in-android-collection-widget/,
  * https://www.sitepoint.com/how-to-code-an-android-widget/,
