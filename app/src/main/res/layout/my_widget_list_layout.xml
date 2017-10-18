@@ -1,12 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/myWidgetListTitle"
+            tools:text="Pick A Recipe"
+            android:textColor="@android:color/white"
+            android:background="@color/colorPrimary"
+            android:textSize="20sp"
+            android:gravity="center"
+            />
 
         <ListView
             android:id="@+id/myWidgetListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            />
+
+        <!-- chosen recipe's ingredients -->
+        <TextView
+            android:id="@+id/myWidgetRecipeIngredients"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            tools:text="Butter 4oz"
+            android:visibility="gone"
+            android:background="@android:color/white"
+            />
 
         <!-- no items for list -->
         <TextView
@@ -14,7 +41,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="No Recipes Available Yet"
-            android:visibility="gone" />
+            android:text="No Data Available Yet"
+            android:visibility="gone"
+            android:background="@android:color/white"
+
+            />
 
 </LinearLayout>

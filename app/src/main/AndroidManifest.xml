@@ -34,7 +34,6 @@
         <receiver android:name="annekenl.nanobaking.widget.MyWidgetProvider" android:label="Recipe Ingredients">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="annekenl.nanobaking.widget.MyWidgetProvider.ACTION_TOAST" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/my_widget" />
         </receiver>
@@ -45,3 +44,5 @@
     </application>
 
 </manifest>
+
+<!--  <action android:name="annekenl.nanobaking.widget.MyWidgetProvider.ACTION_TOAST" /> not needed for the widget list pending intents (handled in mywidgetprovider -->
