@@ -55,9 +55,9 @@ public class MyWidgetDataHelper
         {
             IngredientItem currItem = ingredientItems.get(i);
 
-            ingredients += currItem.getIngredient() + " " + "-" + " " + "\n";
-            ingredients += currItem.getQuantity() + " " +
-                    currItem.getMeasure().toLowerCase() + "\n\n";
+            ingredients += currItem.getIngredient() + " - ";
+            ingredients += currItem.getQuantity() +
+                    currItem.getMeasure().toLowerCase() + "\n";
         }
 
         return ingredients;

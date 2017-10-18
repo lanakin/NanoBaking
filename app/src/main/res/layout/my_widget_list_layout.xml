@@ -25,14 +25,13 @@
             />
 
         <!-- chosen recipe's ingredients -->
-        <TextView
+       <TextView
             android:id="@+id/myWidgetRecipeIngredients"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            tools:text="Butter 4oz"
             android:visibility="gone"
             android:background="@android:color/white"
+            android:textColor="@android:color/black"
             />
 
         <!-- no items for list -->
@@ -42,9 +41,9 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="No Data Available Yet"
-            android:visibility="gone"
+            android:textColor="@android:color/black"
             android:background="@android:color/white"
-
+            android:visibility="gone"
             />
 
 </LinearLayout>

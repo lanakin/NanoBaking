@@ -4,8 +4,8 @@
     android:initialLayout="@layout/my_widget_list_layout"
 
     android:updatePeriodMillis="0"
-    android:minWidth="146dp"
-    android:minHeight="146dp"
+    android:minWidth="294dp"
+    android:minHeight="220dp"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
 

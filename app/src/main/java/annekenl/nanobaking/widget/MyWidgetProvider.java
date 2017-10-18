@@ -67,12 +67,16 @@ public class MyWidgetProvider extends AppWidgetProvider
             RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.my_widget_list_layout);
             remoteView.setTextViewText(R.id.myWidgetListTitle, intent.getExtras().getString(WIDGET_RECIPE_NAME));
 
+            //future enhancement continue to research ways to show the ingredients; this is the best dynamic solution
+            //I had for first showing a list of recipes (names) to choose from and then a singular recipe's ingredients*
+            //with a default/minimum widget size 4x3 - all ingredients can be view at the moment
             remoteView.setViewVisibility(R.id.myWidgetListView, View.GONE);
             remoteView.setViewVisibility(R.id.myWidgetRecipeIngredients, View.VISIBLE);
             remoteView.setTextViewText(R.id.myWidgetRecipeIngredients, intent.getExtras().getString(WIDGET_INGREDS_STR));
 
-
             appWidgetManager.updateAppWidget(widgetId, remoteView);
+
+           // appWidgetManager.notifyAppWidgetViewDataChanged(widgetId,R.id.myWidgetListView); ~changing all widgets~
         }
 
         super.onReceive(context, intent);

@@ -50,6 +50,8 @@ public class MyWidgetRemoteViewsFactory implements RemoteViewsService.RemoteView
     @Override
     public void onDataSetChanged() {
         //to do...
+        //Log.e("notify","test");
+        //mWidgetListItems = mDataHelper.getRecipeItems();
     }
 
     @Override
