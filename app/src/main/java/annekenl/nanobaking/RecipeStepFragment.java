@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -33,6 +34,9 @@ import butterknife.Unbinder;
 
 /**
  * Displays and controls data for a single recipe step.
+ *
+ * Reference for saving and resuming video state with ExoPlayer:
+ * https://github.com/google/ExoPlayer/blob/release-v2/demo/src/main/java/com/google/android/exoplayer2/demo/PlayerActivity.java
  */
 
 public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPlayer.EventListener
@@ -45,6 +49,10 @@ public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPl
 
     private SimpleExoPlayer mExoPlayer;
 
+    private boolean shouldAutoPlay;
+    private int resumeWindow;
+    private long resumePosition;
+
     //private SimpleExoPlayerView mPlayerView;
     //private ImageView mImageView;
     @BindView(R.id.stepPlayerView) SimpleExoPlayerView mPlayerView;
@@ -54,14 +62,21 @@ public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPl
     //private String testUrl = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffdb88_6-add-the-batter-to-the-pan-w-the-crumbs-cheesecake/6-add-the-batter-to-the-pan-w-the-crumbs-cheesecake.mp4";
     private String droidChefUrl = "http://cdn04.androidauthority.net/wp-content/uploads/2012/08/Android-chef.jpg";
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
+        shouldAutoPlay = true;
+        clearResumePosition();
+
         if (getArguments().containsKey(RECIPE_STEP)) {
             mRecipeStep = getArguments().getParcelable(RECIPE_STEP);
         }
+
+       // setRetainInstance(true); //heard the audio still but image to video was gone~
     }
 
     @Override
@@ -141,8 +156,20 @@ public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPl
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                     getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
-            mExoPlayer.setPlayWhenReady(true);
+
+            mExoPlayer.setPlayWhenReady(true);  //shouldautoplay
         }
+
+        //boolean haveResumePosition = resumeWindow != C.INDEX_UNSET;
+       // if (haveResumePosition) {
+          //  mExoPlayer.seekTo(resumeWindow, resumePosition);
+        //}
+        //mExoPlayer.prepare(mediaSource, !haveResumePosition, false);
+        //prepare(MediaSource mediaSource, boolean resetPosition, boolean resetState)
+        //resetPosition - whether the playback pos should be reset to default position in the first timeline.window. if false, playback will start
+        //from the pos defined by getCurrentWindowIndex() and getCurrentPosition()
+        //resetState - whether the timeline, manifest, tracks and track selections should be reset. should be true unless the player is being prepared
+        //to play the same media as it was playing previously (ex if playback failed and is being retired).
     }
 
     /**
@@ -150,10 +177,62 @@ public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPl
      */
     private void releasePlayer() {
         //mNotificationManager.cancelAll();
-        mExoPlayer.stop();
-        mExoPlayer.release();
-        mExoPlayer = null;
+
+        if(mExoPlayer != null)
+        {
+            //shouldAutoPlay = player.getPlayWhenReady();
+            //updateResumePosition();
+
+            //mExoPlayer.stop();
+
+            mExoPlayer.release();
+            mExoPlayer = null;
+        }
     }
+
+    private void updateResumePosition() {
+        //resumeWindow = player.getCurrentWindowIndex();
+        //resumePosition = Math.max(0, player.getContentPosition());
+    }
+
+    private void clearResumePosition() {
+        //resumeWindow = C.INDEX_UNSET;
+        //resumePosition = C.TIME_UNSET;
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23) {
+            initializePlayer();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if ((Util.SDK_INT <= 23 || mExoPlayer == null)) {
+            initializePlayer();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23) {
+            releasePlayer();
+        }
+    }
+
 
     // ExoPlayer Event Listeners
     @Override

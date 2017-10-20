@@ -32,7 +32,7 @@ public class RecipeDetailNavFragment extends Fragment
     public static boolean mTwoPane;
 
     private RecipeItem mItem;
-    public static ArrayList<Fragment> mNavigationList;//store 'recipe parts' - ingredients or
+    protected static ArrayList<Fragment> mNavigationList;//store 'recipe parts' - ingredients or
         //a single recipe step as their respective fragments, in order, for user to easily navigate back and forth through.
 
     private Button prevNavBtn;
@@ -117,6 +117,7 @@ public class RecipeDetailNavFragment extends Fragment
 
         RecipeDetailNavBtnsFragment fragment = new RecipeDetailNavBtnsFragment(); //"recipe_nav_list"
         Bundle arguments = new Bundle();
+        arguments.putParcelable(RecipeDetailNavFragment.RECIPE_ITEM_OBJ, mItem);
         fragment.setArguments(arguments);
 
         getActivity().getSupportFragmentManager().beginTransaction()

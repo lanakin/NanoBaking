@@ -5,7 +5,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import annekenl.nanobaking.recipedata.RecipeItem;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * A 'navigation list' of 'buttons' that represents all the
@@ -16,19 +24,50 @@ import android.widget.TextView;
  */
 public class RecipeDetailNavBtnsFragment extends RecipeDetailNavFragment
 {
+    @BindView(R.id.recipeIntroImgView) ImageView mImageView;
+    @BindView(R.id.recipeIntroTextView) TextView mTextView;
+    private Unbinder unbinder;
+
+    private RecipeItem mItem;
+
+    private String droidChefUrl = "http://cdn04.androidauthority.net/wp-content/uploads/2012/08/Android-chef.jpg"; //test
+
     public RecipeDetailNavBtnsFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getArguments().containsKey(RECIPE_ITEM_OBJ)) { //passed in from RecipeDetailActivity
+            mItem = getArguments().getParcelable(RECIPE_ITEM_OBJ);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View rootView = inflater.inflate(R.layout.recipe_detail_content, container, false);
+        View rootView = inflater.inflate(R.layout.recipe_intro_details, container, false);
+        unbinder = ButterKnife.bind(this,rootView);
+
+
+        if(mItem != null) {
+            //main recipe image
+            String imgUrl = mItem.getImageUrl();
+
+            if (imgUrl.isEmpty())
+                Picasso.with(getContext()).load(droidChefUrl).noFade()
+                        .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+                        .into(mImageView);
+            else {
+                mImageView.setVisibility(View.GONE);
+            }
+
+            mTextView.setText("View the necessary ingredients and steps to follow below. This recipe makes" + " " + mItem.getServings() + " servings.");
+        }
+
+        View btnsView = inflater.inflate(R.layout.recipe_detail_content, container, false);
 
         int recipePartsSize = getRecipePartsSize();
 
@@ -47,8 +86,10 @@ public class RecipeDetailNavBtnsFragment extends RecipeDetailNavFragment
                 }
             });
 
-            ((ViewGroup) rootView).addView(recipePartBtn);
+            ((ViewGroup) btnsView).addView(recipePartBtn);
         }
+
+        ((ViewGroup) rootView).addView(btnsView);
 
         return rootView;
     }
@@ -59,5 +100,12 @@ public class RecipeDetailNavBtnsFragment extends RecipeDetailNavFragment
         super.onViewCreated(view, savedInstanceState);
 
         setupNavigationButtons(NO_NAV_INDEX);
+    }
+
+    // When binding a fragment in onCreateView, set the views to null in onDestroyView.
+    // ButterKnife returns an Unbinder on the initial binding that has an unbind method to do this automatically.
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }
