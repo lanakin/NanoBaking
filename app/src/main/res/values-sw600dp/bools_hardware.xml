@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="IsTablet">true</bool>
+</resources>
+
+<!-- I have found the combo layout-sw600dp and values-sw600dp works best to handle tablets including
+the nexus 7 so that portrait mode uses phone layout/behaviour and landscape mode use wide tablet layouts & behaviour -->

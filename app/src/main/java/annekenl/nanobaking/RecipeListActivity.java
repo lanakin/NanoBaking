@@ -84,7 +84,7 @@ public class RecipeListActivity extends AppCompatActivity
 
         //if (findViewById(R.id.recipe_detail_container) != null) {  //android sample stock code
             // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
+            // large-screen layouts (res/values-sw600dp).
             // If this view is present, then the
             // activity should be in two-pane mode.
 
@@ -92,7 +92,7 @@ public class RecipeListActivity extends AppCompatActivity
             mTwoPane = true;
         }
 
-        //if(savedInstanceState == null ) { //nevermind
+        if(savedInstanceState == null ) { //nevermind
 
             if (mTwoPane) {
                 Bundle arguments = new Bundle();
@@ -104,7 +104,7 @@ public class RecipeListActivity extends AppCompatActivity
                         .commit();
             }
 
-        //}
+        }
     }
 
     private void getRecipeData()
