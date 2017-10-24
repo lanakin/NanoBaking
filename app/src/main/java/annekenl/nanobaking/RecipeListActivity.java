@@ -51,6 +51,7 @@ public class RecipeListActivity extends AppCompatActivity
 
     private ArrayList<RecipeItem> mRecipes = new ArrayList<RecipeItem>();
     private SimpleItemRecyclerViewAdapter mRecylerViewAdapter;
+    private RecyclerView mRecyclerView;
 
     //Whether or not the activity is in two-pane mode, i.e. running on a tablet
     private boolean mTwoPane = false;
@@ -66,6 +67,7 @@ public class RecipeListActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
+
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +94,9 @@ public class RecipeListActivity extends AppCompatActivity
             mTwoPane = true;
         }
 
-        if(savedInstanceState == null ) { //nevermind
+        if(savedInstanceState == null )
+        {
+           //mRecylerViewAdapter = new SimpleItemRecyclerViewAdapter(mRecipes);
 
             if (mTwoPane) {
                 Bundle arguments = new Bundle();
@@ -103,7 +107,6 @@ public class RecipeListActivity extends AppCompatActivity
                         .replace(R.id.recipe_detail_container, fragment, "recipe_details")
                         .commit();
             }
-
         }
     }
 
@@ -136,7 +139,7 @@ public class RecipeListActivity extends AppCompatActivity
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>
     {
         private final List<RecipeItem> mValues;
-        private String selectedRecipeTitle = "";
+        public String selectedRecipeTitle = "";
 
         public SimpleItemRecyclerViewAdapter(List<RecipeItem> items) {
             mValues = items;
@@ -218,6 +221,28 @@ public class RecipeListActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString("selected_recipe",mRecylerViewAdapter.selectedRecipeTitle);
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+        // Restore UI state from the savedInstanceState.
+        // This bundle has also been passed to onCreate.
+
+        if(savedInstanceState != null) {
+            mRecylerViewAdapter.selectedRecipeTitle = savedInstanceState.getString("selected_recipe");
+
+            Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+            setSupportActionBar(toolbar);
+            toolbar.setTitle(mRecylerViewAdapter.selectedRecipeTitle);
+        }
+    }
 
     //Typical AsyncTask for network query. Modified from example Sunshine app in Udacity Android Nanodegree
     private class FetchRecipesTask extends AsyncTask<Void, Void, String>
