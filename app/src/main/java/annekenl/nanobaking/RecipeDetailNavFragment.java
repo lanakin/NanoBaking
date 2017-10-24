@@ -54,7 +54,8 @@ public class RecipeDetailNavFragment extends Fragment
         if(savedInstanceState==null) {
             try {
 
-                if (getActivity().findViewById(R.id.recipe_list) != null) {
+                //if (getActivity().findViewById(R.id.recipe_list) != null) {
+                if(getResources().getBoolean(R.bool.IsTablet)) { //by suggestion, this will work for sw600dp and higher
                     // Two pane mode on tablets - recipe list is visible on the left side
                     mTwoPane = true;
                 }
@@ -151,6 +152,10 @@ public class RecipeDetailNavFragment extends Fragment
     {
         prevNavBtn = getActivity().findViewById(R.id.prevBtn);
         nextNavBtn = getActivity().findViewById(R.id.nextBtn);
+
+        if (nextNavBtn == null || prevNavBtn == null) {
+            return;
+        }
 
         if(navID <= 0)
             prevNavBtn.setVisibility(View.GONE);

@@ -2,6 +2,7 @@ package annekenl.nanobaking;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import android.content.res.Configuration;
+
+import static android.provider.ContactsContract.CommonDataKinds.Organization.TITLE;
+
 /**
  * Displays and controls data for a single recipe step.
  *
@@ -50,8 +55,8 @@ public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPl
     private SimpleExoPlayer mExoPlayer;
 
     private boolean shouldAutoPlay;
-    private int resumeWindow;
-    private long resumePosition;
+    private Uri mediaUri;
+    private long resumePlaybackPosition = C.TIME_UNSET;
 
     //private SimpleExoPlayerView mPlayerView;
     //private ImageView mImageView;
@@ -76,8 +81,37 @@ public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPl
             mRecipeStep = getArguments().getParcelable(RECIPE_STEP);
         }
 
-       // setRetainInstance(true); //heard the audio still but image to video was gone~
+        /*if(RecipeDetailNavFragment.mTwoPane) { *//**i assume it's expected on tablets if switch to
+                                                 *portrait - go back to master list only showing*//*
+            setRetainInstance(false);
+        }
+        else {
+            setRetainInstance(true); //keep info. esp. for video to resume on orientation change
+        }*/
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putLong("resume",resumePlaybackPosition);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if(savedInstanceState != null)
+            resumePlaybackPosition = savedInstanceState.getLong("resume");
+    }
+
+    //@Override
+   // public void onConfigurationChanged(Configuration newConfig) {
+      //  super.onConfigurationChanged(newConfig);
+
+        //setRetainInstance(false);
+   // }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,8 +138,10 @@ public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPl
         /* VIDEO AND IMAGE */
         String vidUrl = mRecipeStep.getVideoUrl();
 
-        if(!vidUrl.isEmpty())
-            initializePlayer(Uri.parse(vidUrl));  // Initialize the player.
+        if(!vidUrl.isEmpty()) {
+            mediaUri = Uri.parse(vidUrl);
+            initializePlayer();
+        }
         else {
             //default img ...
             mPlayerView.setVisibility(View.GONE);
@@ -138,52 +174,60 @@ public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPl
     //Exoplayer -- modify some sample code from Classic Music Quiz Activity project from Udacity Nanodegree
     /**
      * Initialize ExoPlayer.
-     * @param mediaUri The URI of the sample to play.
+     * --mediaUri The URI of the sample to play.
      */
-    private void initializePlayer(Uri mediaUri) {
+    private void initializePlayer()
+    {
         if (mExoPlayer == null) {
             // Create an instance of the ExoPlayer.
             TrackSelector trackSelector = new DefaultTrackSelector();
             //LoadControl loadControl = new DefaultLoadControl();  //deprecated
-            mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(),trackSelector);
+            mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
+
             mPlayerView.setPlayer(mExoPlayer);
 
             // Set the ExoPlayer.EventListener to this activity.
             mExoPlayer.addListener(this);
 
-            // Prepare the MediaSource.
-            String userAgent = Util.getUserAgent(getContext(), "NanoBaking");
-            MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
-                    getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
-            mExoPlayer.prepare(mediaSource);
-
-            mExoPlayer.setPlayWhenReady(true);  //shouldautoplay
+            mExoPlayer.setPlayWhenReady(true);  //shouldautoplay -true-
         }
 
-        //boolean haveResumePosition = resumeWindow != C.INDEX_UNSET;
-       // if (haveResumePosition) {
-          //  mExoPlayer.seekTo(resumeWindow, resumePosition);
-        //}
-        //mExoPlayer.prepare(mediaSource, !haveResumePosition, false);
-        //prepare(MediaSource mediaSource, boolean resetPosition, boolean resetState)
-        //resetPosition - whether the playback pos should be reset to default position in the first timeline.window. if false, playback will start
-        //from the pos defined by getCurrentWindowIndex() and getCurrentPosition()
-        //resetState - whether the timeline, manifest, tracks and track selections should be reset. should be true unless the player is being prepared
-        //to play the same media as it was playing previously (ex if playback failed and is being retired).
+        // Prepare the MediaSource.
+        String userAgent = Util.getUserAgent(getContext(), "NanoBaking");
+        MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+                getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
+        //mExoPlayer.prepare(mediaSource);
+
+        boolean haveResumePosition = resumePlaybackPosition != C.TIME_UNSET; //special constant for unset time
+
+        if (haveResumePosition) {
+            mExoPlayer.seekTo(resumePlaybackPosition);  //only 1 track/video so seekto(timePos)
+        }
+
+        mExoPlayer.prepare(mediaSource, !haveResumePosition, false);
+        /**prepare(MediaSource mediaSource, boolean resetPosition, boolean resetState)
+         * resetPosition - whether the playback pos should be reset to default position in the first
+         *      timeline.window. if false, playback will start from the pos defined by getCurrentWindowIndex()
+         *      and getCurrentPosition().
+         * resetState - whether the timeline, manifest, tracks and track selections should be reset.
+         *      should be true unless the player is being prepared to play the same media as it was
+         *      playing previously (ex if playback failed and is being retired).
+         */
     }
 
     /**
      * Release ExoPlayer.
      */
-    private void releasePlayer() {
+    private void releasePlayer()
+    {
         //mNotificationManager.cancelAll();
 
         if(mExoPlayer != null)
         {
-            //shouldAutoPlay = player.getPlayWhenReady();
-            //updateResumePosition();
+            //shouldAutoPlay = mExoPlayer.getPlayWhenReady(); //false?
+            updateResumePosition();
 
-            //mExoPlayer.stop();
+            mExoPlayer.stop();
 
             mExoPlayer.release();
             mExoPlayer = null;
@@ -192,12 +236,12 @@ public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPl
 
     private void updateResumePosition() {
         //resumeWindow = player.getCurrentWindowIndex();
-        //resumePosition = Math.max(0, player.getContentPosition());
+        resumePlaybackPosition = Math.max(0, mExoPlayer.getContentPosition());
     }
 
     private void clearResumePosition() {
         //resumeWindow = C.INDEX_UNSET;
-        //resumePosition = C.TIME_UNSET;
+        resumePlaybackPosition = C.TIME_UNSET;
     }
 
 
@@ -284,12 +328,12 @@ public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPl
     public void onDestroy() {
         super.onDestroy();
 
-        try {
+        //try {
             releasePlayer();
             //mMediaSession.setActive(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //} catch (Exception e) {
+          //  e.printStackTrace();
+       // }
     }
 
 
@@ -299,4 +343,5 @@ public class RecipeStepFragment extends RecipeDetailNavFragment implements ExoPl
         super.onDestroyView();
         unbinder.unbind();
     }
-}
+
+} //end of class

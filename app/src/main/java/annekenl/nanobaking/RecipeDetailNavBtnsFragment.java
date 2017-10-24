@@ -30,7 +30,8 @@ public class RecipeDetailNavBtnsFragment extends RecipeDetailNavFragment
 
     private RecipeItem mItem;
 
-    private String droidChefUrl = "http://cdn04.androidauthority.net/wp-content/uploads/2012/08/Android-chef.jpg"; //test
+    //private String droidChefUrl =
+    // "http://cdn04.androidauthority.net/wp-content/uploads/2012/08/Android-chef.jpg"; //test
 
     public RecipeDetailNavBtnsFragment() {
     }
@@ -56,8 +57,8 @@ public class RecipeDetailNavBtnsFragment extends RecipeDetailNavFragment
             //main recipe image
             String imgUrl = mItem.getImageUrl();
 
-            if (imgUrl.isEmpty())
-                Picasso.with(getContext()).load(droidChefUrl).noFade()
+            if(!imgUrl.isEmpty())
+                Picasso.with(getContext()).load(imgUrl).noFade()  //test droidChefUrl
                         .placeholder(android.R.drawable.progress_indeterminate_horizontal)
                         .into(mImageView);
             else {

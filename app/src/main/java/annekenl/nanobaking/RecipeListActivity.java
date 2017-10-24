@@ -53,7 +53,7 @@ public class RecipeListActivity extends AppCompatActivity
     private SimpleItemRecyclerViewAdapter mRecylerViewAdapter;
 
     //Whether or not the activity is in two-pane mode, i.e. running on a tablet
-    private boolean mTwoPane;
+    private boolean mTwoPane = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -82,24 +82,48 @@ public class RecipeListActivity extends AppCompatActivity
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
 
-        if (findViewById(R.id.recipe_detail_container) != null) {
+        //if (findViewById(R.id.recipe_detail_container) != null) {  //android sample stock code
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
             // activity should be in two-pane mode.
+
+        if (getResources().getBoolean(R.bool.IsTablet)) { //by suggestion, this will work for sw900dp and higher
             mTwoPane = true;
-
-            Bundle arguments = new Bundle();
-            RecipeDetailPlaceholder fragment = new RecipeDetailPlaceholder();
-            fragment.setArguments(arguments);
-
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.recipe_detail_container, fragment, "recipe_details")
-                    .commit();
         }
+
+        //if(savedInstanceState == null ) { //nevermind
+
+            if (mTwoPane) {
+                Bundle arguments = new Bundle();
+                RecipeDetailPlaceholder fragment = new RecipeDetailPlaceholder();
+                fragment.setArguments(arguments);
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.recipe_detail_container, fragment, "recipe_details")
+                        .commit();
+            }
+
+        //}
     }
 
-    private void getRecipeData() { new FetchRecipesTask().execute(); }
+    private void getRecipeData()
+    {
+        /*SharedPreferences prefs = getSharedPreferences(NANOBAKING_PREFS,0);
+        String jsonData = prefs.getString(RECIPE_JSON_KEY,"");
+
+        if(!jsonData.isEmpty())
+            parseRecipesJson(jsonData);
+        else {
+            new FetchRecipesTask().execute();
+        }*/
+
+        if(mRecipes.isEmpty()) {
+            new FetchRecipesTask().execute();
+        }
+
+        //new FetchRecipesTask().execute();
+    }
 
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {

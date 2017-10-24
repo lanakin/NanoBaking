@@ -13,6 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".RecipeListActivity"
+
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -25,7 +26,9 @@
             android:name=".RecipeDetailActivity"
             android:label="@string/title_recipe_detail"
             android:parentActivityName=".RecipeListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="annekenl.nanobaking.RecipeListActivity" />
@@ -45,4 +48,9 @@
 
 </manifest>
 
-<!--  <action android:name="annekenl.nanobaking.widget.MyWidgetProvider.ACTION_TOAST" /> not needed for the widget list pending intents (handled in mywidgetprovider -->
+<!--  android:screenOrientation="nosensor"
+        android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+-->
+
+<!--  <action android:name="annekenl.nanobaking.widget.MyWidgetProvider.ACTION_TOAST" />
+not needed for the widget list pending intents (handled in mywidgetprovider -->
